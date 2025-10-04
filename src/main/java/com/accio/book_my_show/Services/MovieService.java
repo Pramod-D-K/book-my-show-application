@@ -16,15 +16,10 @@ public class MovieService {
     private MovieRepository movieRepository;
 
     public String addMovie(AddMovieRequest addMovieRequest) throws Exception{
-//        this is old type
-//        Movie movie=new Movie();
-//        movie.setMovieName(addMovieRequest.getMovieName());
-//        movie.setDuration(addMovieRequest.getDuration());
-//        movie.setMovieGenre(addMovieRequest.getMovieGenre());
-//        movie.setMovieLanguage(addMovieRequest.getMovieLanguage());
-//        movie.setReleaseDate(addMovieRequest.getReleaseDate());
-//        movie.setRating(addMovieRequest.getRating());
 
+        if(addMovieRequest==null){
+            throw new Exception("Given movie is null");
+        }
         Movie movie=Movie.builder().name(addMovieRequest.getName())
                 .language(addMovieRequest.getLanguage())
                 .genre(addMovieRequest.getGenre())
@@ -45,4 +40,8 @@ public class MovieService {
         return "Movie "+movie.getName()+" has been updated";
     }
 
+    public String clearMovies() throws Exception{
+        movieRepository.deleteAll();
+        return "All Movies deleted";
+    }
 }

@@ -35,4 +35,14 @@ public class MovieController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @DeleteMapping("/deleteAllMovies")
+    public ResponseEntity<String> deleteAllMovies(){
+        try{
+            String ans= movieService.clearMovies();
+            return ResponseEntity.status(HttpStatus.OK).body(ans);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 }
