@@ -3,6 +3,7 @@ package com.accio.book_my_show.Models;
 import com.accio.book_my_show.Enums.SeatStatus;
 import com.accio.book_my_show.Enums.SeatType;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
@@ -17,6 +18,7 @@ public class TheaterSeat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer theaterSeatId;
 
+    @Size(min = 1,message = "Name should be null")
     private String seatNo;
 
     @Enumerated(value = EnumType.STRING)

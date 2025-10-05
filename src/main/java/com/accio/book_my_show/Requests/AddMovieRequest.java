@@ -2,6 +2,7 @@ package com.accio.book_my_show.Requests;
 
 import com.accio.book_my_show.Enums.MovieGenre;
 import com.accio.book_my_show.Enums.MovieLanguage;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 @Setter
 
 public class AddMovieRequest {
+
     private String name;
 
     private double duration;
