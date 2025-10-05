@@ -3,6 +3,9 @@ package com.accio.book_my_show.Models;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "Theaters")
 @Getter
@@ -23,4 +26,7 @@ public class Theater {
 
     private Integer noOfScreens;
 
+    //not create any tables because
+    @OneToMany(mappedBy = "theater",cascade=CascadeType.ALL)
+    private List<TheaterSeat>theaterSeatList=new ArrayList<>();
 }

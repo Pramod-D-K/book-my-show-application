@@ -91,7 +91,11 @@ public class TheaterService {
             }
             count++;
         }
-        theaterSeatRepository.saveAll(theaterSeats);
+        theater.setTheaterSeatList(theaterSeats);
+        theaterRepository.save(theater);
+//      I skipped to save the theaterSeats because it is bidirectional mapping no need to save both of them
+        //because of cascading written in parent table;
+//      theaterSeatRepository.saveAll(theaterSeats);
         return "Seats of theater "+theater.getName()+" has been added";
     }
 }
