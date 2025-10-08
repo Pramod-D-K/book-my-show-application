@@ -12,6 +12,8 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Movies")
@@ -46,4 +48,7 @@ public class Movie {
 
     @Enumerated(value = EnumType.STRING)
     private MovieLanguage language;
+
+    @OneToMany(mappedBy = "movie",cascade = CascadeType.ALL)
+    private List<Show> showList=new ArrayList<>();
 }

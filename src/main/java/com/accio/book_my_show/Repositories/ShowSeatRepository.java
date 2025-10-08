@@ -1,7 +1,7 @@
 package com.accio.book_my_show.Repositories;
 
 import com.accio.book_my_show.Enums.SeatStatus;
-import com.accio.book_my_show.Models.TheaterSeat;
+import com.accio.book_my_show.Models.ShowSeat;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,10 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TheaterSeatRepository extends JpaRepository<TheaterSeat,Integer> {
+public interface ShowSeatRepository extends JpaRepository<ShowSeat,Integer> {
 
-    @Modifying
-    @Transactional
-    @Query(value = "update TheaterSeat set seatStatus=?2 where theaterSeatId=?1",nativeQuery = true)
-    int updateTheaterSeatStatus(Integer theaterSeatId, SeatStatus seatStatus);
+
 }
