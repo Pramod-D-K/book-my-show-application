@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Theaters")
+@Table(name = "Theaters",uniqueConstraints = @UniqueConstraint(
+        columnNames = {"name", "address"}
+))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -37,4 +39,7 @@ public class Theater {
     //not create any tables because
     @OneToMany(mappedBy = "theater",cascade=CascadeType.ALL)
     private List<TheaterSeat>theaterSeatList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "theater",cascade=CascadeType.ALL)
+    private List<Show>showList=new ArrayList<>();
 }

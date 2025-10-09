@@ -41,7 +41,7 @@ public class TheaterController {
     }
 
     @DeleteMapping("/deleteTheater")
-    public ResponseEntity<String> deleteTheater(DeleteTheaterRequest deleteTheaterRequest){
+    public ResponseEntity<String> deleteTheater(@RequestBody DeleteTheaterRequest deleteTheaterRequest){
         try{
             String ans= theaterService.deleteTheater(deleteTheaterRequest);
             return ResponseEntity.status(HttpStatus.OK).body(ans);

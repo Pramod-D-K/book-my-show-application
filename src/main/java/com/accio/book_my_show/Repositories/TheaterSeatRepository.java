@@ -13,6 +13,6 @@ public interface TheaterSeatRepository extends JpaRepository<TheaterSeat,Integer
 
     @Modifying
     @Transactional
-    @Query(value = "update TheaterSeat set seatStatus=?2 where theaterSeatId=?1",nativeQuery = true)
-    int updateTheaterSeatStatus(Integer theaterSeatId, SeatStatus seatStatus);
+    @Query(value = "update theater_seats set seat_status=?2 where theater_seat_id=?1",nativeQuery = true)
+    int updateTheaterSeatStatus(Integer theater_seat_id, SeatStatus seat_status);
 }

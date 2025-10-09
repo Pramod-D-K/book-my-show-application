@@ -2,13 +2,18 @@ package com.accio.book_my_show.Models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.PastOrPresent;
 import lombok.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name="Shows")
+@Table(name="Shows",uniqueConstraints = @UniqueConstraint(
+        columnNames = {"showDate", "showTime", "movie_movie_id", "theater_theater_id"}
+))
 @Setter
 @Getter
 @AllArgsConstructor
@@ -23,7 +28,6 @@ public class Show {
     @FutureOrPresent(message = "Date should not be past")
     private LocalDate showDate;
 
-    @FutureOrPresent(message = "Time should not be past")
     private LocalTime showTime;
 
     @JoinColumn
@@ -33,4 +37,7 @@ public class Show {
     @JoinColumn
     @ManyToOne
     private Theater theater;
+
+    @OneToMany(mappedBy = "show",cascade = CascadeType.ALL)
+    List<ShowSeat>showSeatList=new ArrayList<>();
 }

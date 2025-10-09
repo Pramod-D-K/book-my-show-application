@@ -4,10 +4,7 @@ package com.accio.book_my_show.Models;
 import com.accio.book_my_show.Enums.MovieGenre;
 import com.accio.book_my_show.Enums.MovieLanguage;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -37,10 +34,9 @@ public class Movie {
 
     @Column(precision = 3, scale = 1)
     @DecimalMin(value = "0.1",message = "Rating should be greater than zero")
-    @DecimalMin(value = "10.0", message = "Rating must smaller than or equal to 10")
+    @DecimalMax(value = "10.0", message = "Rating must smaller than or equal to 10")
     private BigDecimal rating;
 
-    @PastOrPresent(message = "Release date should be past or present")
     private LocalDate releaseDate;
 
     @Enumerated(value = EnumType.STRING)

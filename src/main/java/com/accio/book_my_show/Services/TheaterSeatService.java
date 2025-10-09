@@ -23,10 +23,17 @@ public class TheaterSeatService {
     private TheaterSeatRepository theaterSeatRepository;
 
     public String addTheaterSeatRequest(AddTheaterSeatRequest addTheaterSeatRequest) throws Exception{
+
         int theaterId= addTheaterSeatRequest.getTheaterId();
         Optional<Theater> optional=theaterRepository.findById(theaterId);
         Theater theater=optional.orElseThrow(()-> new Exception("Theater not found by this Id"));
 
+        List<TheaterSeat>theaterSeatList=theaterSeatRepository.findAll();
+        for (TheaterSeat theaterSeat:theaterSeatList){
+            if(theaterSeat.getTheater().equals(theater)){
+                return "Seats of this Theater already added";
+            }
+        }
         int noOfClaSeats=addTheaterSeatRequest.getNoOfClassicSeats();
         int noOfPreSeats= addTheaterSeatRequest.getNoOfPremiumSeats();
         int noOfColumns=addTheaterSeatRequest.getNoOfColumns();

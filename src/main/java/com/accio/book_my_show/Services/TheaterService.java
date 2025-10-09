@@ -57,7 +57,11 @@ public class TheaterService {
     }
 
     public String deleteTheater(DeleteTheaterRequest deleteTheaterRequest)throws Exception{
+
         Integer theaterId=deleteTheaterRequest.getTheaterId();
+        if (theaterId == null) {
+            throw new Exception("Theater ID cannot be null!");
+        }
         Optional<Theater>optional=theaterRepository.findById(theaterId);
         Theater theater=optional.orElseThrow(()-> new Exception("Theater not present in this Id"));
         theaterRepository.deleteById(theaterId);

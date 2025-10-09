@@ -54,7 +54,11 @@ public class ShowSeatService {
                 showSeatList.add(showSeat);
             }
         }
-        showSeatRepository.saveAll(showSeatList);
-        return "Show Seats has been generated gor given show Id";
+        List<ShowSeat>oldShowSeatList= show.getShowSeatList();
+        oldShowSeatList.addAll(showSeatList);
+        show.setShowSeatList(oldShowSeatList);
+        showRepository.save(show);
+        //showSeatRepository.saveAll(showSeatList);
+        return "Show Seats has been generated for given show Id";
     }
 }

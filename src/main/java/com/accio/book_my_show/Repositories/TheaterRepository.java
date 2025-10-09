@@ -14,8 +14,8 @@ import java.util.Optional;
 @Repository
 public interface TheaterRepository extends JpaRepository<Theater,Integer> {
 
-    @Query(value = "select * from Theaters where theaterId=:theaterId", nativeQuery = true)
-    Optional<Theater> getTheater(@Param("theaterId") Integer theaterId);
+    @Query(value = "select * from Theaters where theater_id=:theater_id", nativeQuery = true)
+    Optional<Theater> getTheater(@Param("theater_id") Integer theater_id);
 
 
 }

@@ -8,9 +8,12 @@ import com.accio.book_my_show.Repositories.ShowRepository;
 import com.accio.book_my_show.Repositories.TheaterRepository;
 import com.accio.book_my_show.Requests.AddMovieRequest;
 import com.accio.book_my_show.Requests.AddShowRequest;
+import com.accio.book_my_show.Requests.DeleteShowRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,6 +27,7 @@ public class ShowService {
     private TheaterRepository theaterRepository;
 
     public String addShow(AddShowRequest addShowRequest)throws Exception{
+        List<Show> showList=new ArrayList<>();
         Optional<Movie> optionalMovie=movieRepository.getMovie(addShowRequest.getMovieName());
         Movie movie1= optionalMovie.orElseThrow(()->new Exception("movie not found"));
 
@@ -36,8 +40,20 @@ public class ShowService {
                 .movie(movie1)
                 .theater(theater1)
                 .build();
-
-        showRepository.save(show);
+        showList.add(show);
+        List<Show>movieShowList=movie1.getShowList();
+        movieShowList.add(show);
+        movie1.setShowList(movieShowList);
+        movieRepository.save(movie1);
+        //showRepository.save(show);
         return "Show has been added";
+    }
+
+    public String deleteShow(DeleteShowRequest deleteShowRequest)throws Exception{
+        Integer showId= deleteShowRequest.getShowId();
+        Optional<Show> optionalShow= showRepository.findById(showId);
+        Show show= optionalShow.orElseThrow(()-> new Exception("Show not found"));
+        showRepository.deleteById(showId);
+        return  "Show has been deleted";
     }
 }

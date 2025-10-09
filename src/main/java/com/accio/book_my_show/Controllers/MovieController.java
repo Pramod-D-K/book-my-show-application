@@ -7,6 +7,7 @@ import com.accio.book_my_show.Services.MovieService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import com.accio.book_my_show.Requests.AddMovieRequest;
 
@@ -51,7 +52,7 @@ public class MovieController {
     }
 
     @DeleteMapping("/deleteMovie")
-    public ResponseEntity<String> deleteMovie(DeleteMovieRequest deleteMovieRequest){
+    public ResponseEntity<String> deleteMovie(@RequestBody DeleteMovieRequest deleteMovieRequest){
         try{
             String ans= movieService.deleteMovie(deleteMovieRequest);
             return ResponseEntity.status(HttpStatus.OK).body(ans);

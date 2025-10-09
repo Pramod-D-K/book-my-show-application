@@ -23,7 +23,8 @@ public class MovieService {
         if(addMovieRequest==null){
             throw new Exception("Given movie is null");
         }
-        Movie movie=Movie.builder().name(addMovieRequest.getName())
+        Movie movie=Movie.builder()
+                .name(addMovieRequest.getName())
                 .language(addMovieRequest.getLanguage())
                 .genre(addMovieRequest.getGenre())
                 .rating(addMovieRequest.getRating())
@@ -37,8 +38,13 @@ public class MovieService {
             UpdateRatingAndDuration updateRatingAndDuration)throws Exception{
         Optional<Movie> optionalMovie= movieRepository.findById(updateRatingAndDuration.getMovieId());
         Movie movie= optionalMovie.orElseThrow(()-> new Exception("Movie not present"));
-        movie.setDuration(updateRatingAndDuration.getDuration());
-        movie.setRating(updateRatingAndDuration.getRating());
+
+        int updateDur=movieRepository.updateDuration(updateRatingAndDuration.getDuration(),
+                updateRatingAndDuration.getMovieId());
+        int updateRat =movieRepository.updateRating(updateRatingAndDuration.getRating(),
+                updateRatingAndDuration.getMovieId());
+//        movie.setDuration(updateRatingAndDuration.getDuration());
+//        movie.setRating(updateRatingAndDuration.getRating());
         movie=movieRepository.save(movie);
         return "Movie "+movie.getName()+" has been updated";
     }

@@ -34,7 +34,8 @@ public class TheaterSeatController {
     public ResponseEntity<String> changeTheaterSeatStatus(@RequestBody UpdateSeatStatus updateSeatStatus){
         try {
             int ans =theaterSeatService.changeTheaterSeatStatus(updateSeatStatus);
-            return ResponseEntity.ok().body("Seat updated  " +ans);
+            return ResponseEntity.ok().body("Seat No "+updateSeatStatus.getSeatId()+" has been updated \n"
+                    +"Affected rows "+ans);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
