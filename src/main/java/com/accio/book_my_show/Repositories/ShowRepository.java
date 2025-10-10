@@ -19,7 +19,7 @@ public interface ShowRepository extends JpaRepository<Show,Integer> {
                                                                    Integer movieId,
                                                                    Integer theaterId);
 
-    @Query(value = "select * from Shows where show_date=?1 and show_time=?2 and movie_id=?3 and theater_id=?4",nativeQuery = true)
+    @Query(value = "select * from Shows where show_date=?1 and show_time=?2 and movie_movie_id=?3 and theater_theater_id=?4",nativeQuery = true)
     Optional<Show> getShow(LocalDate show_date, LocalTime show_time,Integer movie_id,Integer theater_id);
 
     ///getting list of seats by the

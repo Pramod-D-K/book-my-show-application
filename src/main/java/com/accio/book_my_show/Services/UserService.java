@@ -14,11 +14,11 @@ public class UserService {
     public String addUser(AddUserRequest addUserRequest) throws Exception{
 
         User user=User.builder()
+                .userName(addUserRequest.getName())
                 .emailId(addUserRequest.getEmailId())
-                .name(addUserRequest.getUserName())
                 .mobileNo(addUserRequest.getMobileNo())
                 .build();
         user=userRepository.save(user);
-        return "User saved to Db eith user Id "+user.getUserId();
+        return "User saved to Db with user Id "+user.getUserId();
     }
 }

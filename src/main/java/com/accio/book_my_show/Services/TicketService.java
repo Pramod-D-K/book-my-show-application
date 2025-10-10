@@ -1,5 +1,6 @@
 package com.accio.book_my_show.Services;
 
+import com.accio.book_my_show.Generators.CustomTicketGenerator;
 import com.accio.book_my_show.Models.*;
 import com.accio.book_my_show.Repositories.*;
 import com.accio.book_my_show.Requests.BookTicketRequest;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,7 +30,7 @@ public class TicketService {
     @Autowired
     private ShowSeatRepository showSeatRepository;
 
-    public String bookTicket(BookTicketRequest bookTicketRequest) throws Exception{
+    public GetBookedTicketResponse bookTicket(BookTicketRequest bookTicketRequest) throws Exception{
 
         LocalDate showDate1 = bookTicketRequest.getShowDate();
         LocalTime showTime1 =bookTicketRequest.getShowTime();
@@ -55,25 +57,29 @@ public class TicketService {
         List<String> requestedSeats=bookTicketRequest.getRequestSeats();
 
         List<String> bookedSeats1 = new ArrayList<>();
-        List<String> notBookedSeats1 =requestedSeats;
+        List<String> notBookedSeats1 =new ArrayList<>(requestedSeats);
         int totalAmount1 =0;
+        boolean isPresent=false;
         for (String requestedSeat:requestedSeats){
             for (ShowSeat showSeat:showSeatList ){
 
                 if(showSeat.getSeatNo().equals(requestedSeat)){
+                    isPresent=true;
                     if(showSeat.getIsAvailable()==Boolean.TRUE){
                         totalAmount1 = totalAmount1 +showSeat.getPrice();
                         showSeat.setIsAvailable(Boolean.FALSE);
                         bookedSeats1.add(showSeat.getSeatNo());
-                    }
-                    else{
                         notBookedSeats1.remove(requestedSeat);
+                        showSeatRepository.save(showSeat);
                     }
                 }
             }
         }
 
-        if(notBookedSeats1.equals(requestedSeats)){
+        if(!isPresent){
+            throw new Exception("All seats you entered were not found in this Show");
+        }
+        if(bookedSeats1.isEmpty()){
             throw new Exception("All seats you entered were booked already");
         }
 
@@ -81,24 +87,25 @@ public class TicketService {
                 .showDate(showDate1)
                 .showTime(showTime1)
                 .movieName(movie.getName())
-                .theaterNameAndAddress(theater.getName()+" "+ theater.getAddress())
+                .theaterName(theater.getName())
+                .theaterAddress(theater.getAddress())
                 .totalAmount(totalAmount1)
-                .bookedSeats(bookedSeats1)
+                //.bookedSeats(bookedSeats1)
                 .show(show1)
                 .user(user1)
                 .build();
         ticket=ticketRepository.save(ticket);
 
         String ansMsg="";
-        if(notBookedSeats1.isEmpty()){
+        if(new HashSet<>(bookedSeats1).containsAll(requestedSeats)){
             ansMsg="All seats were booked successfully";
         }else{
-            ansMsg="All seats were not booked successfully";
+            ansMsg="All seats were not booked";
 
         }
 
         GetBookedTicketResponse ans= GetBookedTicketResponse.builder()
-                .userName(user1.getName())
+                .userName(user1.getUserName())
                 .movieName(movieName)
                 .theaterName(theater.getName())
                 .theaterAddress(theater.getAddress())
@@ -107,8 +114,9 @@ public class TicketService {
                 .totalAmount(totalAmount1)
                 .bookedSeats(bookedSeats1)
                 .notBookedSeats(notBookedSeats1)
+                .status(ansMsg)
                 .build();
 
-        return  ans.toString()+ansMsg;
+        return  ans;
     }
 }

@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 public class UpdateSeatStatus {
-    private Integer seatId;
 
+    private Integer seatId;
     private SeatStatus seatStatus;
 }

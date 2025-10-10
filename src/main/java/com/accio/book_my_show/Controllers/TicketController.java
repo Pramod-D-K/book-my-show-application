@@ -17,7 +17,7 @@ public class TicketController {
     @PostMapping("/bookTicket")
     public ResponseEntity<?> bookTicket(@RequestBody BookTicketRequest bookTicketRequest){
         try{
-            String ans=ticketService.bookTicket(bookTicketRequest);
+            GetBookedTicketResponse ans=ticketService.bookTicket(bookTicketRequest);
             return ResponseEntity.ok().body(ans);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

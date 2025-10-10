@@ -30,4 +30,6 @@ public class GetBookedTicketResponse {
     private List<String> bookedSeats;
 
     private List<String> notBookedSeats;
+
+    private String status;
 }

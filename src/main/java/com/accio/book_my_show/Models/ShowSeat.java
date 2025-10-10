@@ -19,7 +19,6 @@ public class ShowSeat {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer Id;
 
-
     private String seatNo;
 
     @Enumerated(value = EnumType.STRING)

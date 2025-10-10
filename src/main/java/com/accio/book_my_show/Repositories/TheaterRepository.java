@@ -18,4 +18,5 @@ public interface TheaterRepository extends JpaRepository<Theater,Integer> {
     Optional<Theater> getTheater(@Param("theater_id") Integer theater_id);
 
 
+
 }

@@ -4,11 +4,12 @@ import lombok.Data;
 
 @Data
 public class AddUserRequest {
-    private String userName;
+
+
+    private String name;
 
     private String mobileNo;
 
     private String emailId;
 
-    private double age;
 }

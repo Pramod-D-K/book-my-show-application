@@ -94,6 +94,10 @@ public class TheaterSeatService {
         Optional<TheaterSeat>optionalTheaterSeat=theaterSeatRepository.findById(seatId);
         TheaterSeat theaterSeat=optionalTheaterSeat.orElseThrow(()-> new Exception("TheaterSeat not found by this Id"));
         int ans=theaterSeatRepository.updateTheaterSeatStatus(seatId,seatStatus);
+
+//        if(updateSeatStatus.getSeatStatus().equals(SeatStatus.BAD)){
+//
+//        }
         return  ans;
     }
 }

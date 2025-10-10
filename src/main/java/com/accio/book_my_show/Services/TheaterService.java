@@ -49,7 +49,6 @@ public class TheaterService {
             GetTheaterResponse theaterResponse=GetTheaterResponse.builder()
                     .name(theater.getName())
                     .address(theater.getAddress())
-                    .noOfScreens(theater.getNoOfScreens())
                     .build();
             theaterResponses.add(theaterResponse);
         }

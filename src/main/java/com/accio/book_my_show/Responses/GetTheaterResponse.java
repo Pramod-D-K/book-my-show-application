@@ -12,6 +12,4 @@ public class GetTheaterResponse {
     private String name;
 
     private String address;
-
-    private Integer noOfScreens;
 }

@@ -48,15 +48,19 @@ public class ShowSeatService {
                         .build();
                 if(theaterSeat.getSeatType().equals(SeatType.CLASSIC)){
                     showSeat.setPrice(addShoeSeatRequest.getPriceOfClassicSeat());
+                    showSeatRepository.save(showSeat);
+                    showSeatList.add(showSeat);
                 }else{
                     showSeat.setPrice(addShoeSeatRequest.getPriceOfPremiumSeat());
+                    showSeatRepository.save(showSeat);
+                    showSeatList.add(showSeat);
                 }
-                showSeatList.add(showSeat);
+
             }
         }
-        List<ShowSeat>oldShowSeatList= show.getShowSeatList();
-        oldShowSeatList.addAll(showSeatList);
-        show.setShowSeatList(oldShowSeatList);
+//        List<ShowSeat>oldShowSeatList=new ArrayList<>()
+//        oldShowSeatList.addAll(showSeatList);
+        show.setShowSeatList(showSeatList);
         showRepository.save(show);
         //showSeatRepository.saveAll(showSeatList);
         return "Show Seats has been generated for given show Id";

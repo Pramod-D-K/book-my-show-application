@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
+import com.accio.book_my_show.Generators.*;
+
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -18,8 +20,9 @@ import java.util.List;
 @Builder
 public class Ticket {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ticketId;
+    @GeneratedValue(generator = "ticketGenerator")
+    @GenericGenerator(name = "ticketGenerator", strategy = "com.accio.book_my_show.Generators.CustomTicketGenerator")
+    private String ticketId;
 
     @FutureOrPresent(message = "date should not be past")
     private LocalDate showDate;
@@ -28,11 +31,13 @@ public class Ticket {
 
     private String movieName;
 
-    private String theaterNameAndAddress;
+    private String theaterName;
+
+    private String theaterAddress;
 
     private Integer totalAmount;
 
-    private List<String> bookedSeats;
+    //private List<String> bookedSeats;
 
     @JoinColumn
     @ManyToOne
