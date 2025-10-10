@@ -1,5 +1,6 @@
 package com.accio.book_my_show.Services;
 
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.Movie;
 import com.accio.book_my_show.Models.Show;
 import com.accio.book_my_show.Models.Theater;
@@ -26,13 +27,13 @@ public class ShowService {
     @Autowired
     private TheaterRepository theaterRepository;
 
-    public String addShow(AddShowRequest addShowRequest)throws Exception{
+    public String addShow(AddShowRequest addShowRequest){
         List<Show> showList=new ArrayList<>();
         Optional<Movie> optionalMovie=movieRepository.getMovie(addShowRequest.getMovieName());
-        Movie movie1= optionalMovie.orElseThrow(()->new Exception("movie not found"));
+        Movie movie1= optionalMovie.orElseThrow(()->new ResourceNotFoundException("movie not found"));
 
         Optional<Theater>optionalTheater=theaterRepository.getTheater(addShowRequest.getTheaterId());
-        Theater theater1= optionalTheater.orElseThrow(()->new Exception("Theater not found"));
+        Theater theater1= optionalTheater.orElseThrow(()->new ResourceNotFoundException("Theater not found"));
 
         Show show= Show.builder()
                 .showTime(addShowRequest.getShowTime())
@@ -49,10 +50,10 @@ public class ShowService {
         return "Show has been added";
     }
 
-    public String deleteShow(DeleteShowRequest deleteShowRequest)throws Exception{
+    public String deleteShow(DeleteShowRequest deleteShowRequest){
         Integer showId= deleteShowRequest.getShowId();
         Optional<Show> optionalShow= showRepository.findById(showId);
-        Show show= optionalShow.orElseThrow(()-> new Exception("Show not found"));
+        Show show= optionalShow.orElseThrow(()-> new ResourceNotFoundException("Show not found"));
         showRepository.deleteById(showId);
         return  "Show has been deleted";
     }

@@ -1,5 +1,8 @@
 package com.accio.book_my_show.Services;
 
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
+import com.accio.book_my_show.Exceptions.GlobalExceptionHandler.*;
+
 import com.accio.book_my_show.Models.Movie;
 import com.accio.book_my_show.Repositories.MovieRepository;
 import com.accio.book_my_show.Requests.AddMovieRequest;
@@ -7,8 +10,10 @@ import com.accio.book_my_show.Requests.DeleteMovieRequest;
 import com.accio.book_my_show.Requests.UpdateRatingAndDuration;
 import com.accio.book_my_show.Responses.GetMovieResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -18,10 +23,10 @@ public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    public String addMovie(AddMovieRequest addMovieRequest) throws Exception{
+    public String addMovie(AddMovieRequest addMovieRequest){
 
         if(addMovieRequest==null){
-            throw new Exception("Given movie is null");
+            throw new RuntimeException ("Given movie is null");
         }
         Movie movie=Movie.builder()
                 .name(addMovieRequest.getName())
@@ -35,9 +40,9 @@ public class MovieService {
     }
 
     public String updateMovieRatingAndDuration(
-            UpdateRatingAndDuration updateRatingAndDuration)throws Exception{
+            UpdateRatingAndDuration updateRatingAndDuration){
         Optional<Movie> optionalMovie= movieRepository.findById(updateRatingAndDuration.getMovieId());
-        Movie movie= optionalMovie.orElseThrow(()-> new Exception("Movie not present"));
+        Movie movie= optionalMovie.orElseThrow(()-> new ResourceNotFoundException("Movie not present"));
 
         int updateDur=movieRepository.updateDuration(updateRatingAndDuration.getDuration(),
                 updateRatingAndDuration.getMovieId());
@@ -48,10 +53,10 @@ public class MovieService {
         movie=movieRepository.save(movie);
         return "Movie "+movie.getName()+" has been updated";
     }
-    public List<GetMovieResponse> getMovieResponseList()throws Exception{
+    public List<GetMovieResponse> getMovieResponseList(){
         List<Movie> movies=movieRepository.findAll();
         if(movies.isEmpty()){
-            throw new Exception("Movie DataBase is Empty");
+            throw new RuntimeException("Movie DataBase is Empty");
         }
         List<GetMovieResponse>movieResponseList=new ArrayList<>();
 
@@ -67,15 +72,15 @@ public class MovieService {
         return movieResponseList;
     }
 
-    public String deleteMovie(DeleteMovieRequest movieRequest)throws Exception{
+    public String deleteMovie(DeleteMovieRequest movieRequest){
         Integer movieId= movieRequest.getMovieId();
         Optional<Movie> optionalMovie=movieRepository.findById(movieId);
-        Movie movie=optionalMovie.orElseThrow(()-> new Exception("Movie not found by this Id"));
+        Movie movie=optionalMovie.orElseThrow(()-> new ResourceNotFoundException("Movie not found by this Id"));
         movieRepository.deleteById(movieId);
         return "Movie has been deleted";
     }
 
-    public String clearMovies() throws Exception{
+    public String clearMovies(){
         movieRepository.deleteAll();
         return "All Movies deleted";
     }

@@ -2,6 +2,7 @@ package com.accio.book_my_show.Services;
 
 import com.accio.book_my_show.Enums.SeatStatus;
 import com.accio.book_my_show.Enums.SeatType;
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.Theater;
 import com.accio.book_my_show.Models.TheaterSeat;
 import com.accio.book_my_show.Repositories.TheaterRepository;
@@ -22,11 +23,11 @@ public class TheaterSeatService {
     @Autowired
     private TheaterSeatRepository theaterSeatRepository;
 
-    public String addTheaterSeatRequest(AddTheaterSeatRequest addTheaterSeatRequest) throws Exception{
+    public String addTheaterSeatRequest(AddTheaterSeatRequest addTheaterSeatRequest) {
 
         int theaterId= addTheaterSeatRequest.getTheaterId();
         Optional<Theater> optional=theaterRepository.findById(theaterId);
-        Theater theater=optional.orElseThrow(()-> new Exception("Theater not found by this Id"));
+        Theater theater=optional.orElseThrow(()-> new ResourceNotFoundException("Theater not found by this Id"));
 
         List<TheaterSeat>theaterSeatList=theaterSeatRepository.findAll();
         for (TheaterSeat theaterSeat:theaterSeatList){
@@ -88,11 +89,11 @@ public class TheaterSeatService {
         return "Seats of theater "+theater.getName()+" has been added";
     }
 
-    public int changeTheaterSeatStatus(UpdateSeatStatus updateSeatStatus)throws Exception{
+    public int changeTheaterSeatStatus(UpdateSeatStatus updateSeatStatus){
         Integer seatId=updateSeatStatus.getSeatId();
         SeatStatus seatStatus=updateSeatStatus.getSeatStatus();
         Optional<TheaterSeat>optionalTheaterSeat=theaterSeatRepository.findById(seatId);
-        TheaterSeat theaterSeat=optionalTheaterSeat.orElseThrow(()-> new Exception("TheaterSeat not found by this Id"));
+        TheaterSeat theaterSeat=optionalTheaterSeat.orElseThrow(()-> new ResourceNotFoundException("TheaterSeat not found by this Id"));
         int ans=theaterSeatRepository.updateTheaterSeatStatus(seatId,seatStatus);
 
 //        if(updateSeatStatus.getSeatStatus().equals(SeatStatus.BAD)){

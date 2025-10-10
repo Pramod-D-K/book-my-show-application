@@ -17,7 +17,6 @@ public class CustomTicketGenerator implements IdentifierGenerator {
             throw new IllegalArgumentException("CustomTicketGenerator can only be used for Ticket entities");
         }
 
-        // Extract required info directly from entity
         String movieName = ticket.getMovieName() != null && ticket.getMovieName().length() >= 2
                 ? ticket.getMovieName().substring(0, 2).toUpperCase() : "MV";
 

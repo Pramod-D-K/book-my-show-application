@@ -2,6 +2,7 @@ package com.accio.book_my_show.Services;
 
 import com.accio.book_my_show.Enums.SeatStatus;
 import com.accio.book_my_show.Enums.SeatType;
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.Show;
 import com.accio.book_my_show.Models.ShowSeat;
 import com.accio.book_my_show.Models.Theater;
@@ -26,11 +27,11 @@ public class ShowSeatService {
     @Autowired
     private ShowSeatRepository showSeatRepository;
 
-    public String addShowSeat(AddShoeSeatRequest addShoeSeatRequest)throws Exception{
+    public String addShowSeat(AddShoeSeatRequest addShoeSeatRequest){
 
         Integer showId= addShoeSeatRequest.getShowId();
         Optional<Show>optionalShow=showRepository.findById(showId);
-        Show show= optionalShow.orElseThrow(()-> new Exception("Show not found By this Id"));
+        Show show= optionalShow.orElseThrow(()-> new ResourceNotFoundException("Show not found By this Id"));
 
         Theater theater= show.getTheater();
 

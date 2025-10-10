@@ -2,6 +2,7 @@ package com.accio.book_my_show.Services;
 
 import com.accio.book_my_show.Enums.SeatStatus;
 import com.accio.book_my_show.Enums.SeatType;
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.Movie;
 import com.accio.book_my_show.Models.Theater;
 import com.accio.book_my_show.Models.TheaterSeat;
@@ -13,6 +14,7 @@ import com.accio.book_my_show.Requests.DeleteTheaterRequest;
 import com.accio.book_my_show.Responses.GetMovieResponse;
 import com.accio.book_my_show.Responses.GetTheaterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public class TheaterService {
     @Autowired
     private TheaterSeatRepository theaterSeatRepository;
 
-    public String addTheater(AddTheaterRequest addTheaterRequest) throws Exception{
+    public String addTheater(AddTheaterRequest addTheaterRequest) {
 
         Theater theater= Theater.builder()
                 .name(addTheaterRequest.getName())
@@ -39,10 +41,10 @@ public class TheaterService {
         return "Theater "+theater.getName()+" has been added";
     }
 
-    public List<GetTheaterResponse> getTheaterResponseList()throws Exception{
+    public List<GetTheaterResponse> getTheaterResponseList(){
         List<Theater>theaterList=theaterRepository.findAll();
         if(theaterList.isEmpty()){
-            throw new Exception("Theater DataBase is Empty");
+            throw new RuntimeException("Theater DataBase is Empty");
         }
         List<GetTheaterResponse> theaterResponses=new ArrayList<>();
         for (Theater theater:theaterList){
@@ -55,14 +57,14 @@ public class TheaterService {
         return theaterResponses;
     }
 
-    public String deleteTheater(DeleteTheaterRequest deleteTheaterRequest)throws Exception{
+    public String deleteTheater(DeleteTheaterRequest deleteTheaterRequest){
 
         Integer theaterId=deleteTheaterRequest.getTheaterId();
         if (theaterId == null) {
-            throw new Exception("Theater ID cannot be null!");
+            throw new RuntimeException("Theater ID cannot be null!");
         }
         Optional<Theater>optional=theaterRepository.findById(theaterId);
-        Theater theater=optional.orElseThrow(()-> new Exception("Theater not present in this Id"));
+        Theater theater=optional.orElseThrow(()-> new ResourceNotFoundException("Theater not present in this Id"));
         theaterRepository.deleteById(theaterId);
         return "Theater has been deleted";
     }

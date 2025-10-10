@@ -11,7 +11,7 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    public String addUser(AddUserRequest addUserRequest) throws Exception{
+    public String addUser(AddUserRequest addUserRequest) {
 
         User user=User.builder()
                 .userName(addUserRequest.getName())

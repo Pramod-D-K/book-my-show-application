@@ -1,6 +1,6 @@
 package com.accio.book_my_show.Services;
 
-import com.accio.book_my_show.Generators.CustomTicketGenerator;
+import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.*;
 import com.accio.book_my_show.Repositories.*;
 import com.accio.book_my_show.Requests.BookTicketRequest;
@@ -30,28 +30,28 @@ public class TicketService {
     @Autowired
     private ShowSeatRepository showSeatRepository;
 
-    public GetBookedTicketResponse bookTicket(BookTicketRequest bookTicketRequest) throws Exception{
+    public GetBookedTicketResponse bookTicket(BookTicketRequest bookTicketRequest){
 
         LocalDate showDate1 = bookTicketRequest.getShowDate();
         LocalTime showTime1 =bookTicketRequest.getShowTime();
         Integer theaterId= bookTicketRequest.getTheaterId();
         Optional<Theater>optionalTheater=theaterRepository.findById(theaterId);
-        Theater theater= optionalTheater.orElseThrow(()-> new Exception("Theater not found by this Id"));
+        Theater theater= optionalTheater.orElseThrow(()-> new ResourceNotFoundException("Theater not found by this Id"));
 
         String movieName= bookTicketRequest.getMovieName();
         Optional<Movie>optionalMovie=movieRepository.getMovie(movieName);
-        Movie movie= optionalMovie.orElseThrow(()-> new Exception("Movie not found by this Id"));
+        Movie movie= optionalMovie.orElseThrow(()-> new ResourceNotFoundException("Movie not found by this Id"));
 
         String mobileNo=bookTicketRequest.getMobileNo();
         Optional<User>optionalUser=userRepository.findUserByMobileNo(mobileNo);
-        User user1 =optionalUser.orElseThrow(()-> new Exception("User not found"));
+        User user1 =optionalUser.orElseThrow(()-> new ResourceNotFoundException("User not found"));
 
         Optional<Show>optionalShow=showRepository.getShow(
                 showDate1,
                 showTime1,
                 movie.getMovieId(),
                 theater.getTheaterId());
-        Show show1 =optionalShow.orElseThrow(()-> new Exception("Show not found by this show1 time and date"));
+        Show show1 =optionalShow.orElseThrow(()-> new ResourceNotFoundException("Show not found by this show1 time and date"));
         Integer showId = show1.getShowId();
         List<ShowSeat>showSeatList= showSeatRepository.findAllByShow_ShowId(showId);
         List<String> requestedSeats=bookTicketRequest.getRequestSeats();
@@ -77,10 +77,10 @@ public class TicketService {
         }
 
         if(!isPresent){
-            throw new Exception("All seats you entered were not found in this Show");
+            throw new ResourceNotFoundException("All seats you entered were not found in this Show");
         }
         if(bookedSeats1.isEmpty()){
-            throw new Exception("All seats you entered were booked already");
+            throw new ResourceNotFoundException("All seats you entered were booked already");
         }
 
         Ticket ticket= Ticket.builder()
