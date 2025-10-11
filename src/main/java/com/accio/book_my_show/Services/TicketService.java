@@ -29,6 +29,8 @@ public class TicketService {
     private ShowRepository showRepository;
     @Autowired
     private ShowSeatRepository showSeatRepository;
+    @Autowired
+    private MailService mailService;
 
     public GetBookedTicketResponse bookTicket(BookTicketRequest bookTicketRequest){
 
@@ -51,7 +53,7 @@ public class TicketService {
                 showTime1,
                 movie.getMovieId(),
                 theater.getTheaterId());
-        Show show1 =optionalShow.orElseThrow(()-> new ResourceNotFoundException("Show not found by this show1 time and date"));
+        Show show1 =optionalShow.orElseThrow(()-> new ResourceNotFoundException("Show not found by the time and date or theater"));
         Integer showId = show1.getShowId();
         List<ShowSeat>showSeatList= showSeatRepository.findAllByShow_ShowId(showId);
         List<String> requestedSeats=bookTicketRequest.getRequestSeats();
@@ -80,6 +82,7 @@ public class TicketService {
             throw new ResourceNotFoundException("All seats you entered were not found in this Show");
         }
         if(bookedSeats1.isEmpty()){
+            mailService.sendNotSeatBookedMail(user1,bookTicketRequest);
             throw new ResourceNotFoundException("All seats you entered were booked already");
         }
 
@@ -103,7 +106,6 @@ public class TicketService {
             ansMsg="All seats were not booked";
 
         }
-
         GetBookedTicketResponse ans= GetBookedTicketResponse.builder()
                 .userName(user1.getUserName())
                 .movieName(movieName)
@@ -116,7 +118,8 @@ public class TicketService {
                 .notBookedSeats(notBookedSeats1)
                 .status(ansMsg)
                 .build();
-
+        String ticketNo=ticket.getTicketId();
+        mailService.sendTicketConfirmation(user1,ticketNo,ans);
         return  ans;
     }
 }

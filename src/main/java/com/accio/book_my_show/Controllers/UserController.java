@@ -1,6 +1,7 @@
 package com.accio.book_my_show.Controllers;
 
 import com.accio.book_my_show.Requests.AddUserRequest;
+import com.accio.book_my_show.Services.MailService;
 import com.accio.book_my_show.Services.UserService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +16,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class UserController {
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private MailService mailService;
 
     @PostMapping("/addUser")
     public ResponseEntity<String> addUser(@Valid @RequestBody  AddUserRequest addUserRequest){
