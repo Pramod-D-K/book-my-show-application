@@ -11,7 +11,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "Theaters")
+@Table(name = "Theaters",uniqueConstraints = @UniqueConstraint(
+        columnNames = {"name", "address"}
+))
 @Getter
 @Setter
 @AllArgsConstructor
@@ -30,6 +32,8 @@ public class Theater {
     @Size(min = 1,message = "Name should be null")
     private String address;
 
+    private  String city;
+
     @Min(value = 1,message = "NoOfScreen should be greater than or equal to 1")
     @Max(value = 10,message = "NoOfScreen should be smaller than or equal to 10")
     private Integer noOfScreens;
@@ -37,4 +41,7 @@ public class Theater {
     //not create any tables because
     @OneToMany(mappedBy = "theater",cascade=CascadeType.ALL)
     private List<TheaterSeat>theaterSeatList=new ArrayList<>();
+
+    @OneToMany(mappedBy = "theater",cascade=CascadeType.ALL)
+    private List<Show>showList=new ArrayList<>();
 }

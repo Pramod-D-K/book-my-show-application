@@ -7,7 +7,9 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Entity
-@Table(name = "TheaterSeats")
+@Table(name = "TheaterSeats",uniqueConstraints = @UniqueConstraint(
+        columnNames = {"seatNo","theater_theater_id"}
+))
 @NoArgsConstructor
 @Setter
 @Getter
