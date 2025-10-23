@@ -32,6 +32,8 @@ public class Theater {
     @Size(min = 1,message = "Name should be null")
     private String address;
 
+    private  String city;
+
     @Min(value = 1,message = "NoOfScreen should be greater than or equal to 1")
     @Max(value = 10,message = "NoOfScreen should be smaller than or equal to 10")
     private Integer noOfScreens;

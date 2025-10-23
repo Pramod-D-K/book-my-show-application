@@ -96,7 +96,8 @@ public class TheaterSeatService {
         TheaterSeat theaterSeat=optionalTheaterSeat.orElseThrow(()-> new ResourceNotFoundException("TheaterSeat not found by this Id"));
         int ans=theaterSeatRepository.updateTheaterSeatStatus(seatId,seatStatus);
 
-//        if(updateSeatStatus.getSeatStatus().equals(SeatStatus.BAD)){
+//        Theater theater= theaterSeatRepository.
+//        if(seatStatus.equals(SeatStatus.BAD)){
 //
 //        }
         return  ans;
