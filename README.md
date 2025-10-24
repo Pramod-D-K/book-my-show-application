@@ -13,7 +13,7 @@ This application allows users to book tickets, manage movies, shows, theaters, a
 
 
 📂 Project Structure
-
+<pre> ```
 book-my-show/
 ├── pom.xml
 ├── mvnw / mvnw.cmd
@@ -39,7 +39,7 @@ book-my-show/
 │
 └── test/java/com/accio/book_my_show/
     └── BookMyShowApplicationTests.java
-
+``` </pre>
 
 
 📂 Folder Explanation
