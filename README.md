@@ -54,9 +54,9 @@ book-my-show/
 * Generators → Custom utilities, e.g., ticket generator
 
 Swagger
-![1swagger](1swagger.jpg)
-![2swagger](https://github.com/user-attachments/assets/14f1f811-dfab-49a1-9a2d-1c4043c7e3a9)
-![3swagger](https://github.com/user-attachments/assets/b1c76868-1c36-4813-b2e4-2a9e7ab51ce2)
+![1swagger](https://github.com/Pramod-D-K/Images-of-projects/blob/main/1swagger.jpg)
+![2swagger](https://github.com/Pramod-D-K/Images-of-projects/blob/main/2swagger.jpg)
+![3swagger](https://github.com/Pramod-D-K/Images-of-projects/blob/main/3swagger.jpg)
 
 
 
