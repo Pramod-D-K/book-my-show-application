@@ -16,8 +16,11 @@ This application allows users to book tickets, manage movies, shows, theaters, a
 
 book-my-show/
 ├── pom.xml
+|
 ├── mvnw / mvnw.cmd
+|
 ├── HELP.md
+|
 ├── .gitignore
 │
 ├── src/
