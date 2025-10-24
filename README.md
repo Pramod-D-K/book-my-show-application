@@ -68,4 +68,4 @@ Swagger
 💻 Java | Spring Boot | MySQL | REST APIs  
 📧: pramoddk8590@gmail.com
 🔗 [GitHub](https://github.com/Pramod-D-K)
-🔗 [LinkedIn](www.linkedin.com/in/pramodgowda)
+🔗 [LinkedIn](https://www.linkedin.com/in/pramodgowda)
