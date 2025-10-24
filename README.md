@@ -1,9 +1,9 @@
-                                                              🎬 Book My Show Application
+                                         🎬 Book My Show Application
 
 A backend movie and event booking system inspired by BookMyShow, built using Java, Spring Boot, and MySQL.
 This application allows users to book tickets, manage movies, shows, theaters, and seats via RESTful APIs, fully documented in Swagger UI.
 
-    🌟 Features
+  🌟 Features
 
 * Add and manage movies, theaters, and shows
 * Create and book seats
@@ -54,7 +54,7 @@ book-my-show/
 * Generators → Custom utilities, e.g., ticket generator
 
 Swagger
-![1swagger](https://github.com/user-attachments/assets/33415464-8eed-4a6f-8a70-2d0b4a0bc494)
+![1swagger](1swagger.jpg)
 ![2swagger](https://github.com/user-attachments/assets/14f1f811-dfab-49a1-9a2d-1c4043c7e3a9)
 ![3swagger](https://github.com/user-attachments/assets/b1c76868-1c36-4813-b2e4-2a9e7ab51ce2)
 
