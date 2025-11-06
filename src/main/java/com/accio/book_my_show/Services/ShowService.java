@@ -9,7 +9,6 @@ import com.accio.book_my_show.Models.Theater;
 import com.accio.book_my_show.Repositories.MovieRepository;
 import com.accio.book_my_show.Repositories.ShowRepository;
 import com.accio.book_my_show.Repositories.TheaterRepository;
-import com.accio.book_my_show.Requests.AddMovieRequest;
 import com.accio.book_my_show.Requests.AddShowRequest;
 import com.accio.book_my_show.Requests.DeleteShowRequest;
 import com.accio.book_my_show.Responses.GetShowResponse;
@@ -110,40 +109,75 @@ public class ShowService {
                                                  LocalDate showDate, LocalTime showTime,
                                                  MovieLanguage language, MovieGenre genre){
         List<GetShowResponse> ans=new ArrayList<>();
-        if(movieName!=null&& city!=null && showDate!=null&& showTime!=null && language!=null&&genre!=null){
-            List<Show>showList=showRepository.findShowByMovie_NameIgnoreCaseAndTheater_CityIgnoreCaseAndMovie_languageAndMovie_GenreAndShowDateAndShowTime(
-                    movieName,city,language,genre,showDate,showTime);
-            if(showList.isEmpty()){
-                throw new ResourceNotFoundException("Show not found");
-            }
-            for (Show show:showList){
-                GetShowResponse showResponse= GetShowResponse.builder()
-                        .showTime(show.getShowTime())
-                        .showDate(show.getShowDate())
-                        .city(show.getTheater().getCity())
-                        .theaterName(show.getTheater().getName())
-                        .movieName(show.getMovie().getName())
-                        .build();
-                ans.add(showResponse);
-            }
-//            return ans;
-        }
-
-//        if(movieName!=null){
-//            List<Movie> movieList= movieRepository.findAll();
-//            if(movieList.isEmpty()){
-//                throw new EmptyResultDataAccessException("Movie database is Empty",1);
-//            }
-//            Optional<Movie> optionalMovie=movieRepository.getMovie(movieName);
-//            Movie movie1= optionalMovie.orElseThrow(()->new ResourceNotFoundException("movie not found"));
-//
-//            List<Show> showList= showRepository.getShowListByMovieName(movieName);
+        List<Show> allShows = showRepository.findAll();
+        List<Show> filteredShows = allShows.stream()
+                .filter(show -> movieName == null || show.getMovie().getName().equalsIgnoreCase(movieName))
+                .filter(show -> city == null || show.getTheater().getCity().equalsIgnoreCase(city))
+                .filter(show -> showDate == null || show.getShowDate().equals(showDate))
+                .filter(show -> showTime == null || show.getShowTime().equals(showTime))
+                .filter(show -> language == null || show.getMovie().getLanguage() == language)
+                .filter(show -> genre == null || show.getMovie().getGenre() == genre)
+                .toList();
+//        if(movieName!=null&& city!=null && showDate!=null&& showTime!=null && language!=null&&genre!=null){
+//            List<Show>showList=showRepository.findShowByMovie_NameIgnoreCaseAndTheater_CityIgnoreCaseAndMovie_languageAndMovie_GenreAndShowDateAndShowTime(
+//                    movieName,city,language,genre,showDate,showTime);
 //            if(showList.isEmpty()){
-//                throw new ResourceNotFoundException("Shows not found");
+//                throw new ResourceNotFoundException("Show not found");
 //            }
-//
+//            for (Show show:showList){
+//                GetShowResponse showResponse= GetShowResponse.builder()
+//                        .showTime(show.getShowTime())
+//                        .showDate(show.getShowDate())
+//                        .city(show.getTheater().getCity())
+//                        .theaterName(show.getTheater().getName())
+//                        .movieName(show.getMovie().getName())
+//                        .build();
+//                ans.add(showResponse);
+//            }
+//            return ans;
 //        }
+//
+//        List<Show> allShowList2 = showRepository.findAll();
+//        List<Show> allShowList1= new ArrayList<>(allShowList2);
+//        if(movieName!=null){
+//            List<Show>showListByMovie=showRepository.getShowListByMovieName(movieName);
+//            allShowList2.removeAll(showListByMovie);
+//        }
+//        if(city!=null){
+//            List<Show>showListByCity=showRepository.findAllByTheater_CityIgnoreCase(city);
+//            allShowList2.removeAll(showListByCity);
+//        }
+//        if(language!=null){
+//            List<Show> showListByLanguage =showRepository.findAllByMovie_Language(language);
+//            allShowList2.removeAll(showListByLanguage);
+//        }
+//        if(genre!=null){
+//            List<Show> showListByGenre =showRepository.findAllByMovie_Genre(genre);
+//            allShowList2.removeAll(showListByGenre);
+//        }
+//        if(showDate!=null){
+//            List<Show> showListByDate =showRepository.findAllByShowDate(showDate);
+//            allShowList2.removeAll(showListByDate);
+//        }
+//        if(showTime!=null){
+//            List<Show> showListByTime =showRepository.findAllByShowTime(showTime);
+//            allShowList2.removeAll(showListByTime);
+//        }
+//        allShowList1.removeAll(allShowList2);
 
+        if(allShows.isEmpty()){
+            throw new ResourceNotFoundException("Show not found");
+        }
+        for (Show show:allShows){
+            GetShowResponse showResponse= GetShowResponse.builder()
+                    .showTime(show.getShowTime())
+                    .showDate(show.getShowDate())
+                    .city(show.getTheater().getCity())
+                    .theaterName(show.getTheater().getName())
+                    .movieName(show.getMovie().getName())
+                    .build();
+            ans.add(showResponse);
+        }
         return ans;
     }
 

@@ -44,4 +44,16 @@ public interface ShowRepository extends JpaRepository<Show,Integer> {
     @Query(value = "select * from Shows where lower(movie_name)=lower(?1) and lower(theater_city)=lower(?2) and movie_language=?3" +
             "and movie_genre=?4 and show_date=?5 and show_time=?6",nativeQuery = true)
     List<Show> getShowByFilter(String movieName, String city, MovieLanguage language, MovieGenre genre, LocalDate showDate, LocalTime showTime);
+
+
+    List<Show> findAllByTheater_CityIgnoreCase(String city);
+
+    List<Show> findAllByMovie_Language(MovieLanguage language);
+
+    List<Show> findAllByMovie_Genre(MovieGenre genre);
+
+    List<Show> findAllByShowDate(LocalDate showDate);
+
+    List<Show> findAllByShowTime(LocalTime showTime);
+
 }

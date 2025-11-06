@@ -23,4 +23,5 @@ public class TicketController {
             GetBookedTicketResponse ans=ticketService.bookTicket(bookTicketRequest);
             return ResponseEntity.ok().body(ans);
     }
+
 }
