@@ -34,7 +34,7 @@ public class ShowController {
         return ResponseEntity.ok().body(getShowResponse);
     }
 
-    @GetMapping("/getShowaByTheaterId/{theaterId}")
+    @GetMapping("/getShowByTheaterId/{theaterId}")
     public ResponseEntity<?> getShowaByTheaterId(@PathVariable("theaterId") Integer theaterId){
         List<GetShowResponse> getShowResponse=showService.getShowByTheater(theaterId);
         return ResponseEntity.ok().body(getShowResponse);

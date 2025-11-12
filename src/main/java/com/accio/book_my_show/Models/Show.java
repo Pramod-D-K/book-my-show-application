@@ -28,6 +28,7 @@ public class Show {
     @FutureOrPresent(message = "Date should not be past")
     private LocalDate showDate;
 
+
     private LocalTime showTime;
 
     @JoinColumn
