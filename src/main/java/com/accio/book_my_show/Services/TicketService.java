@@ -122,4 +122,26 @@ public class TicketService {
         mailService.sendTicketConfirmation(user1,ticketNo,ans);
         return  ans;
     }
+
+
+    public long getRevenueByTheater(Integer theaterId,LocalDate startDate, LocalDate endDate){
+
+        List<Ticket> ticketList=ticketRepository.ticketListByTheaterId(theaterId);
+        if(ticketList.isEmpty()){
+            throw new ResourceNotFoundException("theater not found by this Id");
+        }
+        long ans=0;
+        for (Ticket ticket:ticketList){
+            LocalDate showDate=ticket.getShowDate();
+
+            boolean afterStart = (startDate == null) || !showDate.isBefore(startDate);
+            boolean beforeEnd = (endDate == null) || !showDate.isAfter(endDate);
+
+            if (afterStart && beforeEnd) {
+                ans += ticket.getTotalAmount();
+            }
+        }
+
+        return ans;
+    }
 }

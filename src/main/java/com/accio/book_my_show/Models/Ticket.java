@@ -35,7 +35,7 @@ public class Ticket {
 
     private String theaterAddress;
 
-    private Integer totalAmount;
+    private long totalAmount;
 
     //private List<String> bookedSeats;
 

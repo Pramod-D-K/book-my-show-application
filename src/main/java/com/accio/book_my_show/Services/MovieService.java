@@ -4,7 +4,9 @@ import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Exceptions.GlobalExceptionHandler.*;
 
 import com.accio.book_my_show.Models.Movie;
+import com.accio.book_my_show.Models.Ticket;
 import com.accio.book_my_show.Repositories.MovieRepository;
+import com.accio.book_my_show.Repositories.TicketRepository;
 import com.accio.book_my_show.Requests.AddMovieRequest;
 import com.accio.book_my_show.Requests.DeleteMovieRequest;
 import com.accio.book_my_show.Requests.UpdateRatingAndDuration;
@@ -14,6 +16,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
 import javax.naming.InsufficientResourcesException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -22,6 +25,8 @@ import java.util.Optional;
 public class MovieService {
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private TicketRepository ticketRepository;
 
     public String addMovie(AddMovieRequest addMovieRequest){
 
@@ -72,8 +77,33 @@ public class MovieService {
         return movieResponseList;
     }
 
-    public String deleteMovie(DeleteMovieRequest movieRequest){
-        Integer movieId= movieRequest.getMovieId();
+    public long getTotalAmountByMovie(Integer movieId){
+        long total = ticketRepository.getTotalAmount(movieId);
+        return total;
+    }
+
+    public long getTotalRevenueByPeriod(Integer movieId,LocalDate startDate, LocalDate endDate){
+        List<Ticket> ticketByMovie= ticketRepository.grtTicketByMovie(movieId);
+        if(ticketByMovie.isEmpty()){
+            throw  new ResourceNotFoundException("Movie not found by this movieId");
+        }
+        long total = 0;
+
+        for (Ticket ticket : ticketByMovie) {
+            LocalDate showDate = ticket.getShowDate();
+
+            boolean afterStart = (startDate == null) || !showDate.isBefore(startDate);
+            boolean beforeEnd = (endDate == null) || !showDate.isAfter(endDate);
+
+            if (afterStart && beforeEnd) {
+                total += ticket.getTotalAmount();
+            }
+        }
+
+        return total;
+    }
+
+    public String deleteMovie(Integer movieId){
         Optional<Movie> optionalMovie=movieRepository.findById(movieId);
         Movie movie=optionalMovie.orElseThrow(()-> new ResourceNotFoundException("Movie not found by this Id"));
         movieRepository.deleteById(movieId);

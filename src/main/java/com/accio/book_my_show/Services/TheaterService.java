@@ -57,9 +57,7 @@ public class TheaterService {
         return theaterResponses;
     }
 
-    public String deleteTheater(DeleteTheaterRequest deleteTheaterRequest){
-
-        Integer theaterId=deleteTheaterRequest.getTheaterId();
+    public String deleteTheater(Integer theaterId){
         if (theaterId == null) {
             throw new RuntimeException("Theater ID cannot be null!");
         }
