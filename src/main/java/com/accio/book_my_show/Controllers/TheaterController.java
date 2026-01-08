@@ -1,5 +1,6 @@
 package com.accio.book_my_show.Controllers;
 
+import com.accio.book_my_show.Models.Theater;
 import com.accio.book_my_show.Repositories.TicketRepository;
 import com.accio.book_my_show.Requests.AddTheaterRequest;
 import com.accio.book_my_show.Requests.AddTheaterSeatRequest;
@@ -36,7 +37,6 @@ public class TheaterController {
 
     @GetMapping("/getTheaterList")
     public ResponseEntity<List<GetTheaterResponse>> getTheaterList(){
-
             List<GetTheaterResponse> ans=theaterService.getTheaterResponseList();
             return ResponseEntity.status(HttpStatus.OK).body(ans);
     }
@@ -61,5 +61,17 @@ public class TheaterController {
 
         long ans= ticketService.getRevenueByTheater(theaterId,startDate,endDate);
         return ResponseEntity.status(HttpStatus.OK).body(ans);
+    }
+
+    @GetMapping("/listOfTheaters")
+    public List<Theater> listOfTheaters(@RequestParam String movieName,
+                                        @RequestParam String movieDate) {
+        List<Theater> ans= null;
+        try {
+            ans = theaterService.theaterList(movieName,LocalDate.parse(movieDate));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        return ans;
     }
 }

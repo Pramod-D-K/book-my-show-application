@@ -1,22 +1,17 @@
 package com.accio.book_my_show.Services;
 
-import com.accio.book_my_show.Enums.SeatStatus;
-import com.accio.book_my_show.Enums.SeatType;
 import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
-import com.accio.book_my_show.Models.Movie;
+import com.accio.book_my_show.Models.Show;
 import com.accio.book_my_show.Models.Theater;
-import com.accio.book_my_show.Models.TheaterSeat;
+import com.accio.book_my_show.Repositories.ShowRepository;
 import com.accio.book_my_show.Repositories.TheaterRepository;
 import com.accio.book_my_show.Repositories.TheaterSeatRepository;
 import com.accio.book_my_show.Requests.AddTheaterRequest;
-import com.accio.book_my_show.Requests.AddTheaterSeatRequest;
-import com.accio.book_my_show.Requests.DeleteTheaterRequest;
-import com.accio.book_my_show.Responses.GetMovieResponse;
 import com.accio.book_my_show.Responses.GetTheaterResponse;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +23,9 @@ public class TheaterService {
 
     @Autowired
     private TheaterSeatRepository theaterSeatRepository;
+
+    @Autowired
+    private ShowRepository showRepository;
 
     public String addTheater(AddTheaterRequest addTheaterRequest) {
 
@@ -70,5 +68,18 @@ public class TheaterService {
     public String deleteAllTheater(){
         theaterRepository.deleteAll();
         return "All Theaters were deleted";
+    }
+
+    public List<Theater> theaterList(String movieName, LocalDate showDate) throws Exception{
+        List<Show> showList = showRepository.findByMovie_NameAndShowDate(movieName,showDate);
+        List<Theater> ans= new ArrayList<>();
+        if(showList.isEmpty()){
+            throw new ResourceNotFoundException("Theaters not found");
+        }
+        for(Show show: showList){
+            Theater theater=show.getTheater();
+            ans.add(theater);
+        }
+        return ans;
     }
 }
