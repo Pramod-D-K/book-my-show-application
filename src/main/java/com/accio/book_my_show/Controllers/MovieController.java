@@ -13,6 +13,9 @@ import com.accio.book_my_show.Requests.AddMovieRequest;
 import java.time.LocalDate;
 import java.util.List;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+@CrossOrigin(origins = "http://localhost:3000")
+
 @RestController
 @RequestMapping("/movie")
 public class MovieController {

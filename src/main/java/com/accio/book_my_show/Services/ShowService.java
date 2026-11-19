@@ -2,6 +2,7 @@ package com.accio.book_my_show.Services;
 
 import com.accio.book_my_show.Enums.MovieGenre;
 import com.accio.book_my_show.Enums.MovieLanguage;
+import com.accio.book_my_show.Exceptions.GlobalExceptionHandler;
 import com.accio.book_my_show.Exceptions.ResourceNotFoundException;
 import com.accio.book_my_show.Models.Movie;
 import com.accio.book_my_show.Models.Show;
@@ -32,7 +33,7 @@ public class ShowService {
     @Autowired
     private TheaterRepository theaterRepository;
 
-    public String addShow(AddShowRequest addShowRequest){
+    public String addShow(AddShowRequest addShowRequest) {
         List<Show> showList=new ArrayList<>();
         Optional<Movie> optionalMovie=movieRepository.getMovie(addShowRequest.getMovieName());
         Movie movie1= optionalMovie.orElseThrow(()->new ResourceNotFoundException("movie not found"));
