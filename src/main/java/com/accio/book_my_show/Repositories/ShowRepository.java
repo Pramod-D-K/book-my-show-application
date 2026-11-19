@@ -4,6 +4,7 @@ import com.accio.book_my_show.Enums.MovieGenre;
 import com.accio.book_my_show.Enums.MovieLanguage;
 import com.accio.book_my_show.Models.Show;
 import com.accio.book_my_show.Models.ShowSeat;
+import com.accio.book_my_show.Models.Theater;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -55,5 +56,7 @@ public interface ShowRepository extends JpaRepository<Show,Integer> {
     List<Show> findAllByShowDate(LocalDate showDate);
 
     List<Show> findAllByShowTime(LocalTime showTime);
+
+    List<Show> findByMovie_NameAndShowDate(String movieName, LocalDate showDate);
 
 }
